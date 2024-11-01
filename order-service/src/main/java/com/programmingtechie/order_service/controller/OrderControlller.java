@@ -19,23 +19,16 @@ import java.util.concurrent.CompletableFuture;
 public class OrderControlller {
 
     private final OrderService orderService;
-    private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
-    @TimeLimiter(name = "inventory")
-    @Retry(name = "inventory")
-    public CompletableFuture<String> placeOrder(@RequestBody OrderResquest orderResquest){
-        try {
-            return  CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderResquest));
-        } catch (Exception e) {
-            logger.error("Error placing order: {}", e.getMessage(), e);
-            throw e;
-        }
+    public String placeOrder(@RequestBody OrderResquest orderResquest){
+        orderService.placeOrder(orderResquest);
+        return "Order Placed Successfully";
     }
 
-    public CompletableFuture<String> fallbackMethod(OrderResquest orderResquest, RuntimeException runtimeException){
-        return CompletableFuture.supplyAsync(() -> "Oops! Something went wrong, please order after some time!");
+    public String fallbackMethod(OrderResquest orderResquest, RuntimeException runtimeException){
+        return "Oops! Something went wrong, please order after some time!";
     }
 }
