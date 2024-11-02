@@ -22,13 +22,13 @@ public class OrderControlller {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
+//    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
     public String placeOrder(@RequestBody OrderResquest orderResquest){
-        orderService.placeOrder(orderResquest);
-        return "Order Placed Successfully";
+        return orderService.placeOrder(orderResquest);
     }
 
-    public String fallbackMethod(OrderResquest orderResquest, RuntimeException runtimeException){
-        return "Oops! Something went wrong, please order after some time!";
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public String fallbackMethod(OrderResquest orderResquest, RuntimeException runtimeException){
+//        return "Oops! Something went wrong, please order after some time!";
+//    }
 }

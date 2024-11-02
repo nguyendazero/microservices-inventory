@@ -29,4 +29,9 @@ public class InventoryService {
                 ).toList();
     }
 
+    // Phương thức kiểm tra sự tồn tại của SKU
+    public boolean isSkuCodeAvailable(String skuCode) {
+        return inventoryRepository.findBySkuCode(skuCode) != null;
+    }
+
 }
